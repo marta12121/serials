@@ -1,0 +1,54 @@
+import { useParams } from "react-router-dom";
+import { useFetch } from "../hooks/useFetch";
+import StatusMessage from "../components/StatusMessage";
+import Label from "../components/Label";
+import { GENRES } from "../config/genres";
+import clsx from "clsx";
+
+function SeriesPage() {
+  const { id } = useParams();
+  const { serials, isLoading, isError, fetchSerials } = useFetch(
+    `https://api.tvmaze.com/shows/${id}`,
+  );
+  return (
+    <>
+      {isLoading && <StatusMessage message="Завантаження..." />}
+      {isError && <StatusMessage message={isError} retry={fetchSerials} />}
+      {serials && !isLoading && !isError && (
+        <div className="series-card">
+          {serials.image && (
+            <img src={serials.image.medium} alt={serials.name} height="350px" />
+          )}
+          <h3>{serials.name}</h3>
+          <Label text={serials.premiered.slice(0, 4)} className="series-year" />
+          <p className="series-rating">⭐ {serials.rating.average}</p>
+          <div
+            className="series-description"
+            dangerouslySetInnerHTML={{
+              __html: serials.summary,
+            }}
+          />
+          <div className="genres-container">
+            {serials.genres.map((genre) => {
+              const genreConfig = GENRES[genre];
+
+              if (!genreConfig) {
+                return null;
+              }
+
+              return (
+                <Label
+                  key={genre}
+                  className={clsx("label", genreConfig.className)}
+                  text={genreConfig.label}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default SeriesPage;
