@@ -4,16 +4,18 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 
 function SeriesCard({ serials }) {
+  const currentYear = new Date().getFullYear();
   return (
     <>
       <div className="serials-container">
         {serials.map((serial) => (
           <Link key={serial.id} to={"/series/" + serial.id}>
             <div className="series-cards">
-              {serial.premiered.slice(0, 4) >= 2014 && (
-                <Label text="НОВИНКА" className="label--new" />
-              )}
-              {serial.image && (
+              {serial.premiered &&
+                Number(serial.premiered.slice(0, 4)) >= currentYear && (
+                  <Label text="НОВИНКА" className="label--new" />
+                )}
+              {serial.image && serial.image.medium && (
                 <img
                   src={serial.image.medium}
                   alt={serial.name}
@@ -22,7 +24,7 @@ function SeriesCard({ serials }) {
               )}
               <h3>{serial.name}</h3>
               <div>
-                {serial.genres.map((genre) => {
+                {(serial.genres || []).map((genre) => {
                   const genreConfig = GENRES[genre];
 
                   if (!genreConfig) {
