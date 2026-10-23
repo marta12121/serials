@@ -16,20 +16,30 @@ function SeriesPage() {
       {isError && <StatusMessage message={isError} retry={fetchSerials} />}
       {serials && !isLoading && !isError && (
         <div className="series-card">
-          {serials.image && (
+          {serials.image && serials.image.medium && (
             <img src={serials.image.medium} alt={serials.name} height="350px" />
           )}
           <h3>{serials.name}</h3>
-          <Label text={serials.premiered.slice(0, 4)} className="series-year" />
-          <p className="series-rating">⭐ {serials.rating.average}</p>
+          {serials.premiered && (
+            <Label
+              text={serials.premiered.slice(0, 4)}
+              className="series-year"
+            />
+          )}
+          <p className="series-rating">
+            ⭐{" "}
+            {serials.rating && serials.rating.average
+              ? serials.rating.average
+              : "Рейтинг відсутній"}
+          </p>
           <div
             className="series-description"
             dangerouslySetInnerHTML={{
-              __html: serials.summary,
+              __html: serials.summary || "Опис відсутній",
             }}
           />
           <div className="genres-container">
-            {serials.genres.map((genre) => {
+            {(serials.genres || []).map((genre) => {
               const genreConfig = GENRES[genre];
 
               if (!genreConfig) {

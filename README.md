@@ -1,16 +1,21 @@
-# React + Vite
+# Обрані рішення
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# 1. Де показувати завантаження і помилку?
 
-Currently, two official plugins are available:
+Варіант A — Шапка завжди, стан у сторінці.
+Шапка й пошук залишаються доступними, а кожна сторінка самостійно обробляє завантаження та помилки.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# 2. Де зберігати текст пошуку?
 
-## React Compiler
+Варіант C — Стан у лейауті.
+Поле пошуку залишається в шапці, а стан передається головній сторінці для відображення результатів.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# 3. Як боротися з гонкою запитів?
 
-## Expanding the Oxlint configuration
+Варіант B — `AbortController`.
+Дозволяє скасовувати застарілі запити, щоб результати попереднього пошуку не заважали актуальному.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# 4. Як захиститися від `null`?
+
+Варіант A — Перевірки на місці.
+Компоненти перевіряють наявність даних перед відображенням, щоб відсутні поля API не спричиняли помилок.
