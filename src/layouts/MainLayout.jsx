@@ -1,6 +1,7 @@
 import SearchBar from "../components/SearchBar";
+import { Outlet } from "react-router-dom";
 
-function MainLayout({ value, onChange, children }) {
+function MainLayout() {
   return (
     <>
       <div className="header-container">
@@ -8,10 +9,10 @@ function MainLayout({ value, onChange, children }) {
           src="https://static.tvmaze.com/images/tvm-header-logo.png"
           alt="Logo"
         />
-        <SearchBar value={value} onChange={onChange} />
+        <SearchBar />
       </div>
 
-      {children}
+      <Outlet />
     </>
   );
 }

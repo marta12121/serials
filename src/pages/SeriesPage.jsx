@@ -7,17 +7,18 @@ import clsx from "clsx";
 
 function SeriesPage() {
   const { id } = useParams();
-  const { serials, isLoading, isError, fetchSerials } = useFetch(
+  const { serials, isLoading, isError, errorType, fetchSerials } = useFetch(
     `https://api.tvmaze.com/shows/${id}`,
   );
   return (
     <>
       {isLoading && <StatusMessage message="Завантаження..." />}
-      {isError && <StatusMessage message={isError} retry={fetchSerials} />}
+      {isError && <StatusMessage message={errorType === "offline"? "Немає підключення до інтернету. Перевірте з'єднання та спробуйте ще раз."
+        : isError} retry={errorType === "not-found" ? null : fetchSerials} />}
       {serials && !isLoading && !isError && (
         <div className="series-card">
-          {serials.image && serials.image.medium && (
-            <img src={serials.image.medium} alt={serials.name} height="350px" />
+          {serials?.image?.medium ? (
+            <img src={serials.image.medium} alt={serials.name} height="350px" />):( <div className="poster-placeholder">Постер відсутній</div>
           )}
           <h3>{serials.name}</h3>
           {serials.premiered && (
@@ -27,9 +28,8 @@ function SeriesPage() {
             />
           )}
           <p className="series-rating">
-            ⭐{" "}
-            {serials.rating && serials.rating.average
-              ? serials.rating.average
+            {serials?.rating?.average != null
+              ?  (<>⭐{serials.rating.average}</>)
               : "Рейтинг відсутній"}
           </p>
           <div

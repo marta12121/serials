@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-function DetailLayout({ children }) {
+import { Link, Outlet } from "react-router-dom";
+function DetailLayout() {
   return (
     <>
       <div className="header-container">
@@ -11,7 +11,7 @@ function DetailLayout({ children }) {
           ← На головну
         </Link>
       </div>
-      {children}
+      <Outlet />
     </>
   );
 }
