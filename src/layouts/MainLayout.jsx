@@ -1,5 +1,5 @@
-import SearchBar from "../components/SearchBar";
-import { Outlet } from "react-router-dom";
+import SearchBar from '../components/SearchBar';
+import { Outlet } from 'react-router-dom';
 
 function MainLayout() {
   return (

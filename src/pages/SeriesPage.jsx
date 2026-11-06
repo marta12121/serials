@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
-import { useFetch } from "../hooks/useFetch";
-import StatusMessage from "../components/StatusMessage";
-import Label from "../components/Label";
-import { GENRES } from "../config/genres";
-import clsx from "clsx";
+import { useParams } from 'react-router-dom';
+import { useFetch } from '../hooks/useFetch';
+import StatusMessage from '../components/StatusMessage';
+import Label from '../components/Label';
+import { GENRES } from '../config/genres';
+import clsx from 'clsx';
 
 function SeriesPage() {
   const { id } = useParams();
@@ -13,12 +13,22 @@ function SeriesPage() {
   return (
     <>
       {isLoading && <StatusMessage message="Завантаження..." />}
-      {isError && <StatusMessage message={errorType === "offline"? "Немає підключення до інтернету. Перевірте з'єднання та спробуйте ще раз."
-        : isError} retry={errorType === "not-found" ? null : fetchSerials} />}
+      {isError && (
+        <StatusMessage
+          message={
+            errorType === 'offline'
+              ? "Немає підключення до інтернету. Перевірте з'єднання та спробуйте ще раз."
+              : isError
+          }
+          retry={errorType === 'not-found' ? null : fetchSerials}
+        />
+      )}
       {serials && !isLoading && !isError && (
         <div className="series-card">
           {serials?.image?.medium ? (
-            <img src={serials.image.medium} alt={serials.name} height="350px" />):( <div className="poster-placeholder">Постер відсутній</div>
+            <img src={serials.image.medium} alt={serials.name} height="350px" />
+          ) : (
+            <div className="poster-placeholder">Постер відсутній</div>
           )}
           <h3>{serials.name}</h3>
           {serials.premiered && (
@@ -28,14 +38,16 @@ function SeriesPage() {
             />
           )}
           <p className="series-rating">
-            {serials?.rating?.average != null
-              ?  (<>⭐{serials.rating.average}</>)
-              : "Рейтинг відсутній"}
+            {serials?.rating?.average != null ? (
+              <>⭐{serials.rating.average}</>
+            ) : (
+              'Рейтинг відсутній'
+            )}
           </p>
           <div
             className="series-description"
             dangerouslySetInnerHTML={{
-              __html: serials.summary || "Опис відсутній",
+              __html: serials.summary || 'Опис відсутній',
             }}
           />
           <div className="genres-container">
@@ -49,7 +61,7 @@ function SeriesPage() {
               return (
                 <Label
                   key={genre}
-                  className={clsx("label", genreConfig.className)}
+                  className={clsx('label', genreConfig.className)}
                   text={genreConfig.label}
                 />
               );

@@ -1,5 +1,4 @@
-
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useFetch(url) {
   const [serials, setSerials] = useState(null);
@@ -24,15 +23,13 @@ export function useFetch(url) {
       const result = await fetch(url, { signal });
 
       if (result.status === 404) {
-        setError("Серіал не знайдено");
-        setErrorType("not-found");
+        setError('Серіал не знайдено');
+        setErrorType('not-found');
         return;
       }
 
       if (!result.ok) {
-        throw new Error(
-          "Не вдалося завантажити дані. Спробуйте ще раз."
-        );
+        throw new Error('Не вдалося завантажити дані. Спробуйте ще раз.');
       }
 
       const data = await result.json();
@@ -48,18 +45,18 @@ export function useFetch(url) {
         setSerials(data);
       }
     } catch (err) {
-      if (signal.aborted || err.name === "AbortError") {
+      if (signal.aborted || err.name === 'AbortError') {
         return;
       }
 
       if (!navigator.onLine) {
         setError(
-          "Немає підключення до інтернету. Перевірте з'єднання та спробуйте ще раз."
+          "Немає підключення до інтернету. Перевірте з'єднання та спробуйте ще раз.",
         );
-        setErrorType("offline");
+        setErrorType('offline');
       } else {
-        setError(err.message || "Сталася помилка. Спробуйте ще раз.");
-        setErrorType("request-error");
+        setError(err.message || 'Сталася помилка. Спробуйте ще раз.');
+        setErrorType('request-error');
       }
     } finally {
       if (!signal.aborted) {
