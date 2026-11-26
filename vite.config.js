@@ -5,4 +5,5 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   base: '/serials/',
   plugins: [react()],
+  build: { outDir: 'docs' },
 });
