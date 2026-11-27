@@ -1,7 +1,9 @@
 import SearchBar from '../components/SearchBar';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
+import { useFavorites } from '../context/FavoritesContext';
 
 function MainLayout() {
+  const { likeSerials } = useFavorites();
   return (
     <>
       <div className="header-container">
@@ -9,7 +11,12 @@ function MainLayout() {
           src="https://static.tvmaze.com/images/tvm-header-logo.png"
           alt="Logo"
         />
-        <SearchBar />
+        <div className="btns-container">
+          <Link className="favourite" to="/favourites">
+            ♥ {likeSerials.length > 0 ? likeSerials.length : null}
+          </Link>
+          <SearchBar />
+        </div>
       </div>
 
       <Outlet />

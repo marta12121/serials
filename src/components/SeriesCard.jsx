@@ -2,15 +2,35 @@ import Label from './Label';
 import { GENRES } from '../config/genres';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import { useFavorites } from '../context/FavoritesContext';
 
 function SeriesCard({ serials }) {
+  const { checkFavourSerials, addSerials, deleteSerials } = useFavorites();
   const currentYear = new Date().getFullYear();
   return (
     <>
       <div className="serials-container">
-        {serials.map((serial) => (
-          <Link key={serial.id} to={'/series/' + serial.id}>
-            <div className="series-cards">
+        {serials.map((serial) => {
+          const isFavorite = checkFavourSerials(serial.id);
+          return (
+            <div key={serial.id} className="series-cards">
+              <button
+                type="button"
+                className={`favorite-btn ${isFavorite ? 'is-favorite' : ''}`}
+                aria-label={
+                  isFavorite ? 'Видалити з обраного' : 'Додати в обране'
+                }
+                aria-pressed={isFavorite}
+                onClick={() => {
+                  if (isFavorite) {
+                    deleteSerials(serial.id);
+                  } else {
+                    addSerials(serial);
+                  }
+                }}
+              >
+                {isFavorite ? '♥' : '♡'}
+              </button>
               {serial?.premiered &&
                 Number(serial.premiered.slice(0, 4)) >= currentYear && (
                   <Label text="НОВИНКА" className="label--new" />
@@ -20,11 +40,14 @@ function SeriesCard({ serials }) {
                   src={serial.image.medium}
                   alt={serial.name}
                   height="350px"
+                  width="280px"
                 />
               ) : (
                 <div className="poster-placeholder">Постер відсутній</div>
               )}
-              <h3>{serial.name}</h3>
+              <Link to={'/series/' + serial.id}>
+                <h3>{serial.name}</h3>
+              </Link>
               <div>
                 {(serial.genres || []).map((genre) => {
                   const genreConfig = GENRES[genre];
@@ -43,8 +66,8 @@ function SeriesCard({ serials }) {
                 })}
               </div>
             </div>
-          </Link>
-        ))}
+          );
+        })}
       </div>
     </>
   );
